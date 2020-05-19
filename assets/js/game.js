@@ -132,3 +132,34 @@ var Game = {
 		
 	},
 	
+
+	selfCollision: function() {
+		
+		firstCellX = snake[snake.length-1].x;
+		firstCellY = snake[snake.length-1].y;
+		for(let i=0;i<snake.length-1;i++){
+			
+			if(snake[i].x == firstCellX && snake[i].y == firstCellY){
+				
+				game.state.start('Game_Over');
+				
+			}
+			
+		}
+		
+	},
+	
+	wallCollision: function() {
+		
+		firstCellX = snake[snake.length-1].x;
+		firstCellY = snake[snake.length-1].y;
+		
+		if(firstCellX >= 600 || firstCellX <= 0 || firstCellY >= 450 || firstCellY <= 0){
+			
+			game.state.start('Game_Over');
+			
+		}
+	}
+	
+};
+
