@@ -96,3 +96,39 @@ var Game = {
 			snake.push(lastCell);
 			firstCell = lastCell;
 			
+			if(addNew){
+				snake.unshift(game.add.sprite(oldLastCellX, oldLastCellY, 'snake'));
+				addNew = false;
+			}
+			
+			this.appleCollision();
+			this.wallCollision();
+			this.selfCollision();
+			
+		}
+	},
+	
+	generateApple: function() {
+		
+		let randomX = Math.floor(Math.random()*40)*squareSize;
+        let randomY = Math.floor(Math.random()*30)*squareSize;
+		
+		apple = game.add.sprite(randomX, randomY, 'apple');
+	},
+	
+	appleCollision: function(){
+		
+		for(let i=0;i<snake.length;i++){
+			
+			if(snake[i].x == apple.x && snake[i].y == apple.y){
+				addNew = true;
+				apple.destroy();
+				this.generateApple();
+				score++;
+				scoreTextValue.text = score.toString();
+			}
+			
+		}
+		
+	},
+	
