@@ -33,19 +33,66 @@ var Game = {
 		this.generateApple();
 		
 		textStyle_Key = { font: "bold 14px sans-serif", fill: "#106d13", align: "center" };
-        textStyle_Value = { font: "bold 18px sans-serif", fill: "#106d13", align: "center" };
+		textStyle_Value = { font: "bold 18px sans-serif", fill: "#106d13", align: "center" };
 
-		// Score.
-        game.add.text(30, 20, "SCORE", textStyle_Key);
-        scoreTextValue = game.add.text(90, 18, score.toString(), textStyle_Value);
-        // Speed.
-        game.add.text(500, 20, "SPEED", textStyle_Key);
-        speedTextValue = game.add.text(558, 18, speed.toString(), textStyle_Value);
-		
-	},
+			// Score.
+		game.add.text(30, 20, "SCORE", textStyle_Key);
+		scoreTextValue = game.add.text(90, 18, score.toString(), textStyle_Value);
+		// Speed.
+		game.add.text(500, 20, "SPEED", textStyle_Key);
+		speedTextValue = game.add.text(558, 18, speed.toString(), textStyle_Value);
+
+		},
 	
 	update: function() {
 		
 		if((cursors.right.isDown && direction != 'left')){
 			new_direction = 'right';
 		}
+		else if((cursors.left.isDown && direction != 'right')){
+			new_direction = 'left';
+		}
+		else if((cursors.up.isDown && direction != 'down')){
+			new_direction = 'up';
+		}
+		else if((cursors.down.isDown && direction != 'up')){
+			new_direction = 'down';
+		}
+		
+		speed = Math.min(12,Math.floor(score/5));
+		speedTextValue = ""+speed;
+		
+		updateDelay++;
+		
+		if((updateDelay%(10 - speed)) == 0){
+			
+			let firstCell = snake[snake.length - 1];
+			let lastCell = snake.shift();
+			oldLastCellX = lastCell.x;
+			oldLastCellY = lastCell.y;
+			
+			if(new_direction){
+				direction = new_direction;
+				new_direction = null;
+			}
+			
+			if(direction == 'right'){
+				lastCell.x = firstCell.x+squareSize;
+				lastCell.y = firstCell.y;
+			}
+			else if(direction == 'left'){
+				lastCell.x = firstCell.x-squareSize;
+				lastCell.y = firstCell.y;
+			}
+			else if(direction == 'up'){
+				lastCell.x = firstCell.x;
+				lastCell.y = firstCell.y-squareSize;
+			}
+			else if(direction == 'down'){
+				lastCell.x = firstCell.x;
+				lastCell.y = firstCell.y+squareSize;
+			}
+			
+			snake.push(lastCell);
+			firstCell = lastCell;
+			
